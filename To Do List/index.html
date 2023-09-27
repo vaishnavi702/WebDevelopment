@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<header>   
+	<h1>To Do List</h1>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="main.js" defer></script>
+</header>
+</head>
+<body>  
+	<body onload="time()"></body>
+	<div class="todo-container"></div>
+	<div class="date-hour">   
+		<p id="date"></p>   
+		<p id="hour"></p>
+	</div>
+	<form action="" id="todo-form">   
+		<p>Add Your Task Here</p>   
+		<div class="form-control">      
+			<input type="text" id="todo-input" placeholder="Type here about your next task">      
+			<button type="submit">         
+				<i class="fa-thin fa-plus">ADD</i>       
+			</button>   
+		</div>
+	</form>
+    <form action="" id="edit-form" class="hide">	
+    	<p>Edit Your Task</p>	
+    	<div class="form-control">		
+    		<input type="text" id="edit-input" placeholder="Type here about your next task">		
+    		<button type="submit">			
+    			<i class="fa-solid fa-check-double">DONE</i>
+    		</button>	
+    	</div>		
+    	<button type="button" id="cancel-edit-btn">Cancel</button>
+    </form>
+    <div class="todo-list" id="todo-list">    
+    	<div class="todo">        
+    		<h3>Some Default Task</h3>        
+    		<button class="finish-todo">            
+    			<i class="fa-solid fa-check">Complete</i>        
+    		</button>        
+    		<button class="edit-todo">            
+    			<i class="fa-solid fa-pen">Edit</i>        
+    		</button>        
+    		<button class="remove-todo">            
+    			<i class="fa-solid fa-xmark">Delete</i>        
+    		</button>    
+    	</div>
+    </div>
+</body>
+</html>
