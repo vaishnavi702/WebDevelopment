@@ -1,0 +1,228 @@
+// components/Header.js
+import React from 'react';
+import './Header.css';
+
+const Header = () => {
+  return (
+    <header className="header">
+      <div className="logo">
+        <img src="/path-to-logo.png" alt="Logo" />
+        <h1>Murmair</h1>
+      </div>
+      <nav className="nav">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Me</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button className="contact-btn">Contact</button>
+    </header>
+  );
+}
+
+export default Header;
+
+
+// components/Hero.js
+import React from 'react';
+import './Hero.css';
+
+const Hero = () => {
+  return (
+    <section className="hero">
+      <div className="hero-content">
+        <h2>Hi, I am</h2>
+        <h1>Muhammad Umair</h1>
+        <h3>UI & UX Designer</h3>
+        <p>
+          I turn ideas into user-friendly interfaces and experiences. Let's create something amazing together.
+        </p>
+        <button className="hire-me-btn">Hire Me</button>
+      </div>
+      <div className="hero-image">
+        <img src="/path-to-image.png" alt="Muhammad Umair" />
+      </div>
+    </section>
+  );
+}
+
+export default Hero;
+
+
+// components/About.js
+import React from 'react';
+import './About.css';
+
+const About = () => {
+  return (
+    <section className="about" id="about">
+      <h2>About Me</h2>
+      <div className="about-content">
+        <div className="about-image">
+          <img src="/path-to-image.png" alt="Muhammad Umair" />
+        </div>
+        <div className="about-text">
+          <p>I'm a UI/UX designer with a passion for creating intuitive and engaging user experiences...</p>
+          <div className="skills">
+            <div className="skill">
+              <p>Website Design</p>
+              <input type="range" value="80" />
+            </div>
+            <div className="skill">
+              <p>App Design</p>
+              <input type="range" value="90" />
+            </div>
+            <div className="skill">
+              <p>Graphic Design</p>
+              <input type="range" value="75" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default About;
+// components/Services.js
+import React from 'react';
+import './Services.css';
+
+const Services = () => {
+  return (
+    <section className="services" id="services">
+      <h2>Services</h2>
+      <div className="services-list">
+        <div className="service-item">
+          <h3>UI/UX Design</h3>
+          <p>Creating user-centric designs for web and mobile applications.</p>
+        </div>
+        <div className="service-item">
+          <h3>Web Design</h3>
+          <p>Designing responsive and interactive websites.</p>
+        </div>
+        <div className="service-item">
+          <h3>App Design</h3>
+          <p>Developing sleek and user-friendly mobile applications.</p>
+        </div>
+        <div className="service-item">
+          <h3>Graphic Design</h3>
+          <p>Crafting visually appealing graphics for various needs.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Services;
+// components/Projects.js
+import React from 'react';
+import './Projects.css';
+
+const Projects = () => {
+  return (
+    <section className="projects" id="projects">
+      <h2>My Projects</h2>
+      <div className="projects-list">
+        <div className="project-item">
+          <h3>Project 1</h3>
+          <p>Description of Project 1.</p>
+        </div>
+        <div className="project-item">
+          <h3>Project 2</h3>
+          <p>Description of Project 2.</p>
+        </div>
+        <div className="project-item">
+          <h3>Project 3</h3>
+          <p>Description of Project 3.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Projects;
+// components/Testimonials.js
+import React from 'react';
+import './Testimonials.css';
+
+const Testimonials = () => {
+  return (
+    <section className="testimonials" id="testimonials">
+      <h2>Testimonials</h2>
+      <div className="testimonial-item">
+        <p>"Amazing work, highly recommend!"</p>
+        <h4>- Client Name</h4>
+      </div>
+    </section>
+  );
+}
+
+export default Testimonials;
+// src/App.js
+import React from 'react';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import About from './components/About';
+import Services from './components/Services';
+import Projects from './components/Projects';
+import Testimonials from './components/Testimonials';
+
+function App() {
+  return (
+    <div className="App">
+      <Header />
+      <Hero />
+      <About />
+      <Services />
+      <Projects />
+      <Testimonials />
+    </div>
+  );
+}
+
+export default App;
+/* Header.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header .logo img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.header .nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.header .nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.contact-btn {
+  padding: 10px 20px;
+  background-color: #ff6600;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
