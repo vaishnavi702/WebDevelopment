@@ -1,100 +1,115 @@
-const data = new Date();
+let totalTasks = 0;
+let completedTasks = 0;
 
-const todoForm = document.querySelector("#todo-form");
-const todoInput = document.querySelector("#todo-input");
-const todoList = document.querySelector("#todo-list");
-const editForm = document.querySelector("#edit-form");
-const editInput = document.querySelector("#edit-input");
-const cancelEditBtn = document.querySelector("#cancel-edit-btn");
-let oldInputValue;
-const timeElapsed = Date.now();
-const today = new Date(timeElapsed);
-document.getElementById("date").innerHTML = today.toDateString();
-function time() {    
-	const data = new Date();    
-	let h = data.getHours();    
-	let m = data.getMinutes();    
-	let s = data.getSeconds();    
-	if(h < 10)        
-		h = "0" +h;    
-	if(m < 10)        
-		m = "0" + m;    
-	if(s < 10)        
-		s = "0" + s;    
-	document.getElementById("hour").innerHTML = h +":"+ m + ":" + s;    
-	setTimeout('time()', 500);
+document.addEventListener('DOMContentLoaded', loadTasks);
+document.getElementById('addTaskBtn').addEventListener('click', addTask);
+
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach(task => {
+        const li = createTaskElement(task.text, task.completed);
+        document.getElementById('taskList').appendChild(li);
+        if (task.completed) completedTasks++;
+    });
+    totalTasks = tasks.length;
+    updateProgressBar();
+    updateTaskCount();
 }
-todoForm.addEventListener("submit", (e) => {    
-    e.preventDefault();    
-    const inputValue = todoInput.value;    
-    if(inputValue)        
-       saveTodo(inputValue); 
-})
 
-const saveTodo = (text) => {    
-	const todo = document.createElement("div");    
-	todo.classList.add("todo");  
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const taskText = taskInput.value.trim();
 
-	const todoTitle = document.createElement("h3");    
-	todoTitle.innerText = text;    
-	todo.appendChild(todoTitle); 
+    if (taskText === '') {
+        alert('Please enter a task!');
+        return;
+    }
 
-	 const doneBtn = document.createElement("button");    
-	 doneBtn.classList.add("finish-todo");    
-	 doneBtn.innerHTML = '<i class="fa-solid fa-check"></i>';    
-	 todo.appendChild(doneBtn);    
+    const taskList = document.getElementById('taskList');
+    const li = createTaskElement(taskText, false);
+    taskList.appendChild(li);
+    taskInput.value = '';
 
-	 const editBtn = document.createElement("button");    
-	 editBtn.classList.add("edit-todo");    
-	 editBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';    
-	 todo.appendChild(editBtn);    
-
-	 const removeBtn = document.createElement("button");    
-	 removeBtn.classList.add("remove-todo");    
-	 removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';    
-	 todo.appendChild(removeBtn);    todoList.appendChild(todo);    
-	 todoInput.value = "";    
-	 todoInput.focus();
+    totalTasks++;
+    updateProgressBar();
+    updateTaskCount();
+    saveTasks();
 }
-document.addEventListener("click", (e) => {    
-	const targetEl = e.target;    
-	const parentEl = targetEl.closest("div");    
-	let todoTitle;    
-	if(parentEl && parentEl.querySelector("h3"))        
-		todoTitle = parentEl.querySelector("h3").innerText;        
 
-	if(targetEl.classList.contains("finish-todo"))       
-		parentEl.classList.toggle("done");        
-
-	if(targetEl.classList.contains("remove-todo"))        
-		parentEl.remove();    
-
-	if(targetEl.classList.contains("edit-todo")){        
-		toggleForms();        
-		editInput.value = todoTitle;       
-		oldInputValue = todoTitle;    }
-})
-const toggleForms = () => {    
-	editForm.classList.toggle("hide");    
-	todoForm.classList.toggle("hide");    
-	todoList.classList.toggle("hide");
+function createTaskElement(taskText, completed) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span class="${completed ? 'completed' : ''}">${taskText} ${completed ? '✓' : ''}</span>
+        <button onclick="completeTask(this)">✅</button>
+        <button onclick="editTask(this)">✏️</button>
+        <button onclick="markImportant(this)">★</button>
+        <button onclick="deleteTask(this)">❌</button>
+    `;
+    return li;
 }
-cancelEditBtn.addEventListener("click", (e) => {    
-	e.preventDefault();    
-	toggleForms();
-})
-editForm.addEventListener("submit", (e) => {    
-    e.preventDefault();    
-    const editInputValue = editInput.value;    
-    if(editInputValue)        
-    updateTodo(editInputValue)     
-toggleForms();
-})
-const updateTodo = (text) => {    
-	const todos = document.querySelectorAll(".todo");    
-	todos.forEach((todo) => {        
-		let todoTitle = todo.querySelector("h3");        
-		if(todoTitle.innerText === oldInputValue)            
-			todoTitle.innerText = text;    
-	})
+
+function completeTask(button) {
+    const li = button.parentElement;
+    li.querySelector('span').classList.toggle('completed');
+
+   
+    confetti();
+
+    
+    button.disabled = true;
+
+   
+    if (li.querySelector('span').classList.contains('completed')) {
+        completedTasks++;
+    } else {
+        completedTasks--;
+    }
+    updateProgressBar();
+    updateTaskCount();
+    saveTasks();
+}
+
+function markImportant(button) {
+    const li = button.parentElement;
+    const taskSpan = li.querySelector('span');
+    taskSpan.classList.toggle('important');
+    if (taskSpan.classList.contains('important')) {
+        taskSpan.innerHTML += ' ★';
+    } else {
+        taskSpan.innerHTML = taskSpan.innerHTML.replace(' ★', ''); 
+    }
+    saveTasks(); 
+}
+
+function deleteTask(button) {
+    const li = button.parentElement;
+    if (li.querySelector('span').classList.contains('completed')) {
+        completedTasks--;
+    }
+    li.remove();
+    totalTasks--;
+    updateProgressBar();
+    updateTaskCount();
+    saveTasks();
+}
+
+function saveTasks() {
+    const tasks = [];
+    document.querySelectorAll('#taskList li').forEach(li => {
+        const taskText = li.querySelector('span').innerText.replace(' ★', ''); 
+        const completed = li.querySelector('span').classList.contains('completed');
+        tasks.push({ text: taskText, completed: completed });
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function updateProgressBar() {
+    const progressBar = document.getElementById('progressBar');
+    const progressPercentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+    progressBar.style.width = progressPercentage + '%';
+}
+
+function updateTaskCount() {
+    const taskCountDisplay = document.getElementById('taskCount');
+    taskCountDisplay.innerText = `${completedTasks}/${totalTasks}`;
 }
